@@ -1,0 +1,32 @@
+import urllib.request
+import re
+import html
+def download_page(pageUrl):
+    try:
+        page = urllib.request.urlopen(pageUrl)
+        text = page.read().decode('UTF-8')
+    except:
+        text = 'unavailable page'
+    return text
+def date(text):
+    regPostTitledate = re.compile('<span class="date">.*?<span class="date">((\d{2})\.(\d{2})\.(\d{4}))</span>', flags=re.DOTALL)
+    d = regPostTitledate.search(text)
+    return d
+def finaldate(d):
+    if d:
+        date = d.group(1)
+    else:
+        date = 'no date'
+    print(date)
+
+def main():
+    commonUrl = 'http://velizhnov.ru/article/'
+    for i in range(114220, 114223):
+        pageUrl = commonUrl + str(i)
+        g = download_page(pageUrl)
+        g1 = date(g)
+        finaldate(g1)
+
+if __name__ == '__main__':
+    main()
+
